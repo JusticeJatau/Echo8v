@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import connectDB from "./config/db.js";
 import api from "./routes/api.js";
+import cors from "cors";
 
 process.chdir(path.dirname(fileURLToPath(import.meta.url)));
 if (
