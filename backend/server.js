@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import connectDB from "./config/db.js";
 import api from "./routes/api.js";
+
 process.chdir(path.dirname(fileURLToPath(import.meta.url)));
 if (
   !process.env.JWT_SECRET ||
@@ -18,6 +19,7 @@ if (
 if (!process.env.SITE_ORIGIN)
   throw new Error("Set SITE_ORIGIN in backend/.env");
 const app = express();
+
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -31,6 +33,15 @@ app.use(
     },
   }),
 );
+
+const corsOptions = {
+  origin: process.env.SITE_ORIGIN,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 app.use("/api", api);
